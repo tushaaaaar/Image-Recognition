@@ -60,37 +60,33 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=
 
 model.fit(training_images, training_labels, epochs=10, validation_data=(testing_images, testing_labels))
 
-# calculating loss and accuracy of the model
-loss, accuracy = model.evaluate(testing_images, testing_labels)
-print(f"Accuracy: {accuracy}") 
-
 # saving the model
 model.save('imageclassifier.keras')
 print('Model Saved!')
 
 
+# loading the model
+model = tf.keras.models.load_model('imageclassifier.keras')
 
+# calculating loss and accuracy of the model 
+loss, accuracy = model.evaluate(testing_images, testing_labels)
+print(f"Accuracy: {accuracy}")
 
-# # loading the model
-# model = tf.keras.models.load_model('imageclassifier.keras')
-
-# image_number = 1
-# # checking if the files exist in the following folder
-# while os.path.isfile(f"Images/img{image_number}.jpg"):
-#     try:
-#         # reading the images 
-#         img = cv.imread(f"Images/img{image_number}.jpg")[:,:,0]
-#         # converting color scheme from bgr to rgb
-#         img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-#         # predicting the image
-#         prediction = model.predict(np.array([img]) / 255)
-#         index = np.argmax(prediction)
-#         print(f"This Image is probably a {class_names[index]}")
-#         plt.imshow(img, cmap=plt.cm.binary)
-#         plt.show()
-#     except:
-#         print("Error!")
-#     finally:
-#         image_number += 1
-
-
+image_number = 1
+# checking if the files exist in the following folder
+while os.path.isfile(f"Images/img{image_number}.jpg"):
+    try:
+        # reading the images 
+        img = cv.imread(f"Images/img{image_number}.jpg")[:,:,0]
+        # converting color scheme from bgr to rgb
+        img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+        # predicting the image
+        prediction = model.predict(np.array([img]) / 255)
+        index = np.argmax(prediction)
+        print(f"This Image is probably a {class_names[index]}")
+        plt.imshow(img, cmap=plt.cm.binary)
+        plt.show()
+    except:
+        print("Error!")
+    finally:
+        image_number += 1
